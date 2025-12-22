@@ -1,0 +1,258 @@
+/**
+ * Discord Role Guardian - Website Theme
+ * Custom theme inspired by Discord's dark aesthetic
+ * Author: nayandas69
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Discord-inspired dark theme colors for light mode fallback */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.55 0.18 265);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.55 0.18 265);
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.55 0.18 265);
+  --success: oklch(0.65 0.2 145);
+  --success-foreground: oklch(0.15 0 0);
+  --radius: 0.625rem;
+}
+
+.dark {
+  /* Enhanced Discord-inspired dark theme with better contrast and vibrant accents */
+  --background: oklch(0.11 0.015 260);
+  --foreground: oklch(0.98 0.005 260);
+  --card: oklch(0.15 0.015 260);
+  --card-foreground: oklch(0.96 0.005 260);
+  --popover: oklch(0.15 0.015 260);
+  --popover-foreground: oklch(0.96 0.005 260);
+  --primary: oklch(0.6 0.22 265);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.2 0.015 260);
+  --secondary-foreground: oklch(0.96 0.005 260);
+  --muted: oklch(0.23 0.015 260);
+  --muted-foreground: oklch(0.72 0.01 260);
+  --accent: oklch(0.62 0.24 265);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.5 0.2 25);
+  --destructive-foreground: oklch(0.95 0.02 25);
+  --border: oklch(0.25 0.015 260);
+  --input: oklch(0.2 0.015 260);
+  --ring: oklch(0.6 0.22 265);
+  --success: oklch(0.68 0.22 145);
+  --success-foreground: oklch(0.98 0 0);
+  --feature-reaction-roles: oklch(0.65 0.24 270);
+  --feature-welcome: oklch(0.68 0.22 145);
+  --feature-leave: oklch(0.62 0.22 25);
+  --feature-leveling: oklch(0.68 0.2 85);
+  --feature-ticket: oklch(0.62 0.2 210);
+  --feature-scheduled: oklch(0.6 0.2 305);
+  --feature-role-management: oklch(0.58 0.22 245);
+  --feature-easy-setup: oklch(0.65 0.2 180);
+}
+
+@theme inline {
+  --font-sans: "Geist", "Geist Fallback", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-feature-reaction-roles: var(--feature-reaction-roles);
+  --color-feature-welcome: var(--feature-welcome);
+  --color-feature-leave: var(--feature-leave);
+  --color-feature-leveling: var(--feature-leveling);
+  --color-feature-ticket: var(--feature-ticket);
+  --color-feature-scheduled: var(--feature-scheduled);
+  --color-feature-role-management: var(--feature-role-management);
+  --color-feature-easy-setup: var(--feature-easy-setup);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html[data-scroll-behavior="smooth"] {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom scrollbar for code blocks */
+.code-block::-webkit-scrollbar {
+  height: 8px;
+}
+
+.code-block::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 4px;
+}
+
+.code-block::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.code-block::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Animation keyframes */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation utility classes */
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+.animate-fade-in-down {
+  animation: fade-in-down 0.6s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s ease-out;
+}
+
+/* Stagger animations for list items */
+.stagger-animation>* {
+  opacity: 0;
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.stagger-animation>*:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.stagger-animation>*:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.stagger-animation>*:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.stagger-animation>*:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.stagger-animation>*:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.stagger-animation>*:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.stagger-animation>*:nth-child(7) {
+  animation-delay: 0.7s;
+}
+
+.stagger-animation>*:nth-child(8) {
+  animation-delay: 0.8s;
+}
