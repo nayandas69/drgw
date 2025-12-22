@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Bot Repository
+    url: https://github.com/nayandas69/discord-role-guardian
+    about: Report issues related to the Discord bot itself in the main bot repository
+  - name: Documentation
+    url: https://drgw.vercel.app/documentation
+    about: Check our comprehensive website documentation for guides and tutorials
+  - name: Security Vulnerability
+    url: https://github.com/nayandas69/drgw/security/advisories/new
+    about: Report security vulnerabilities privately through GitHub Security Advisories
