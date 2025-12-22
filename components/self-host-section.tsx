@@ -15,14 +15,21 @@ const GITHUB_URL = "https://github.com/nayandas69/discord-role-guardian"
 const DOCKER_IMAGE = "ghcr.io/nayandas69/discord-role-guardian:latest"
 
 export function SelfHostSection() {
-  const [copiedDocker, setCopiedDocker] = useState(false)
-  const [copiedGit, setCopiedGit] = useState(false)
+  const [copiedStates, setCopiedStates] = useState({
+    dockerPull: false,
+    dockerRun: false,
+    dockerCompose: false,
+    gitClone: false,
+    npmInstall: false,
+    envConfig: false,
+    npmStart: false,
+  })
 
-  const copyToClipboard = async (text: string, setter: (value: boolean) => void) => {
+  const copyToClipboard = async (text: string, key: keyof typeof copiedStates) => {
     try {
       await navigator.clipboard.writeText(text)
-      setter(true)
-      setTimeout(() => setter(false), 2000)
+      setCopiedStates((prev) => ({ ...prev, [key]: true }))
+      setTimeout(() => setCopiedStates((prev) => ({ ...prev, [key]: false })), 2000)
     } catch (err) {
       console.error("Failed to copy:", err)
     }
@@ -77,9 +84,13 @@ export function SelfHostSection() {
                         variant="ghost"
                         size="sm"
                         className="absolute top-2 right-2 transition-all duration-300 hover:scale-110"
-                        onClick={() => copyToClipboard(`docker pull ${DOCKER_IMAGE}`, setCopiedDocker)}
+                        onClick={() => copyToClipboard(`docker pull ${DOCKER_IMAGE}`, "dockerPull")}
                       >
-                        {copiedDocker ? <Check className="h-4 w-4 text-success" /> : <Copy className="h-4 w-4" />}
+                        {copiedStates.dockerPull ? (
+                          <Check className="h-4 w-4 text-success" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -87,14 +98,33 @@ export function SelfHostSection() {
                   {/* Step 2: Run Container */}
                   <div className="animate-slide-up" style={{ animationDelay: "0.2s" }}>
                     <h4 className="mb-2 text-sm font-semibold text-foreground">2. Run the container</h4>
-                    <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
-                      <code>{`docker run -d \\
+                    <div className="relative group">
+                      <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10">
+                        <code>{`docker run -d \\
   --name discord-role-guardian \\
   -e DISCORD_TOKEN=your_token_here \\
   -e CLIENT_ID=your_client_id \\
   -v bot-data:/app/data \\
   ${DOCKER_IMAGE}`}</code>
-                    </pre>
+                      </pre>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute top-2 right-2 transition-all duration-300 hover:scale-110"
+                        onClick={() =>
+                          copyToClipboard(
+                            `docker run -d \\\n  --name discord-role-guardian \\\n  -e DISCORD_TOKEN=your_token_here \\\n  -e CLIENT_ID=your_client_id \\\n  -v bot-data:/app/data \\\n  ${DOCKER_IMAGE}`,
+                            "dockerRun",
+                          )
+                        }
+                      >
+                        {copiedStates.dockerRun ? (
+                          <Check className="h-4 w-4 text-success" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
 
                   {/* Step 3: Docker Compose */}
@@ -102,8 +132,9 @@ export function SelfHostSection() {
                     <h4 className="mb-2 text-sm font-semibold text-foreground">
                       3. Or use Docker Compose (recommended)
                     </h4>
-                    <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
-                      <code>{`# docker-compose.yml
+                    <div className="relative group">
+                      <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10">
+                        <code>{`# docker-compose.yml
 version: '3.8'
 services:
   bot:
@@ -117,7 +148,25 @@ services:
 
 volumes:
   bot-data:`}</code>
-                    </pre>
+                      </pre>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute top-2 right-2 transition-all duration-300 hover:scale-110"
+                        onClick={() =>
+                          copyToClipboard(
+                            `# docker-compose.yml\nversion: '3.8'\nservices:\n  bot:\n    image: ${DOCKER_IMAGE}\n    environment:\n      - DISCORD_TOKEN=your_token_here\n      - CLIENT_ID=your_client_id\n    volumes:\n      - bot-data:/app/data\n    restart: unless-stopped\n\nvolumes:\n  bot-data:`,
+                            "dockerCompose",
+                          )
+                        }
+                      >
+                        {copiedStates.dockerCompose ? (
+                          <Check className="h-4 w-4 text-success" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -147,9 +196,13 @@ volumes:
                         variant="ghost"
                         size="sm"
                         className="absolute top-2 right-2 transition-all duration-300 hover:scale-110"
-                        onClick={() => copyToClipboard(`git clone ${GITHUB_URL}.git`, setCopiedGit)}
+                        onClick={() => copyToClipboard(`git clone ${GITHUB_URL}.git`, "gitClone")}
                       >
-                        {copiedGit ? <Check className="h-4 w-4 text-success" /> : <Copy className="h-4 w-4" />}
+                        {copiedStates.gitClone ? (
+                          <Check className="h-4 w-4 text-success" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -157,30 +210,77 @@ volumes:
                   {/* Step 2: Install */}
                   <div className="animate-slide-up" style={{ animationDelay: "0.2s" }}>
                     <h4 className="mb-2 text-sm font-semibold text-foreground">2. Install dependencies</h4>
-                    <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
-                      <code>{`cd discord-role-guardian
+                    <div className="relative group">
+                      <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10">
+                        <code>{`cd discord-role-guardian
 npm install`}</code>
-                    </pre>
+                      </pre>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute top-2 right-2 transition-all duration-300 hover:scale-110"
+                        onClick={() => copyToClipboard(`cd discord-role-guardian\nnpm install`, "npmInstall")}
+                      >
+                        {copiedStates.npmInstall ? (
+                          <Check className="h-4 w-4 text-success" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
 
                   {/* Step 3: Configure */}
                   <div className="animate-slide-up" style={{ animationDelay: "0.3s" }}>
                     <h4 className="mb-2 text-sm font-semibold text-foreground">3. Configure environment variables</h4>
-                    <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
-                      <code>{`# Create .env file
+                    <div className="relative group">
+                      <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10">
+                        <code>{`# Create .env file
 DISCORD_TOKEN=your_bot_token_here
 CLIENT_ID=your_client_id_here`}</code>
-                    </pre>
+                      </pre>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute top-2 right-2 transition-all duration-300 hover:scale-110"
+                        onClick={() =>
+                          copyToClipboard(
+                            `# Create .env file\nDISCORD_TOKEN=your_bot_token_here\nCLIENT_ID=your_client_id_here`,
+                            "envConfig",
+                          )
+                        }
+                      >
+                        {copiedStates.envConfig ? (
+                          <Check className="h-4 w-4 text-success" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
 
                   {/* Step 4: Run */}
                   <div className="animate-slide-up" style={{ animationDelay: "0.4s" }}>
                     <h4 className="mb-2 text-sm font-semibold text-foreground">4. Start the bot</h4>
-                    <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
-                      <code>{`npm start
+                    <div className="relative group">
+                      <pre className="code-block overflow-x-auto rounded-lg bg-muted p-4 font-mono text-sm text-foreground transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10">
+                        <code>{`npm start
 # Or for development
 npm run dev`}</code>
-                    </pre>
+                      </pre>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="absolute top-2 right-2 transition-all duration-300 hover:scale-110"
+                        onClick={() => copyToClipboard(`npm start\n# Or for development\nnpm run dev`, "npmStart")}
+                      >
+                        {copiedStates.npmStart ? (
+                          <Check className="h-4 w-4 text-success" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
