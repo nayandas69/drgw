@@ -1,9 +1,11 @@
 /**
  * Contributors Page
  * Showcase community members and contributors
- * Highlights developers, supporters, and open-source contributors
+ * Highlights developers, supporters, and open-source contributors from both bot and website repos
  * Author: nayandas69
- * Repository: https://github.com/nayandas69/discord-role-guardian
+ * Repositories:
+ * - Bot: https://github.com/nayandas69/discord-role-guardian
+ * - Website: https://github.com/nayandas69/drgw
  */
 
 "use client"
@@ -30,8 +32,12 @@ interface Contributor {
     role: ContributorRole
     avatar: string
     contributions: number
+    botContributions: number
+    websiteContributions: number
+    contributorType: string
     githubUrl: string
     bio: string
+    description: string // Added description field
 }
 
 /**
@@ -51,12 +57,16 @@ interface ContributionType {
  */
 interface GitHubContributor {
     login: string
-    name: string // Added name field for display name
+    name: string
     avatar: string
     contributions: number
+    botContributions: number
+    websiteContributions: number
+    contributorType: string
     profile: string
     type: string
     bio: string | null
+    description: string // Added description field
 }
 
 /**
@@ -134,19 +144,36 @@ export default function ContributorsPage() {
                         role = "maintainer"
                     }
 
-                    const bio =
-                        contributor.login.toLowerCase() === REPO_OWNER.toLowerCase()
-                            ? CREATOR_BIO
-                            : `${contributor.contributions} contributions to Discord Role Guardian`
+                    let bio = ""
+                    if (contributor.login.toLowerCase() === REPO_OWNER.toLowerCase()) {
+                        bio = ""
+                    } else {
+                        const parts = []
+                        if (contributor.botContributions > 0) {
+                            parts.push(
+                                `${contributor.botContributions} bot contribution${contributor.botContributions !== 1 ? "s" : ""}`,
+                            )
+                        }
+                        if (contributor.websiteContributions > 0) {
+                            parts.push(
+                                `${contributor.websiteContributions} website contribution${contributor.websiteContributions !== 1 ? "s" : ""}`,
+                            )
+                        }
+                        bio = parts.join(" · ")
+                    }
 
                     return {
-                        name: contributor.name, // Use actual display name from GitHub API
+                        name: contributor.name,
                         username: contributor.login,
                         role,
                         avatar: contributor.avatar,
                         contributions: contributor.contributions,
+                        botContributions: contributor.botContributions,
+                        websiteContributions: contributor.websiteContributions,
+                        contributorType: contributor.contributorType,
                         githubUrl: contributor.profile,
                         bio,
+                        description: contributor.description, // Added description from API
                     }
                 })
 
@@ -181,13 +208,17 @@ export default function ContributorsPage() {
      */
     const fallbackContributors: Contributor[] = [
         {
-            name: "Zenitsu", // Updated fallback to use actual display name
+            name: "Zenitsu",
             username: "nayandas69",
             role: "creator",
             avatar: "/developer-working.png",
             contributions: 500,
+            botContributions: 450,
+            websiteContributions: 50,
+            contributorType: "", // Removed label for author
             githubUrl: "https://github.com/nayandas69",
-            bio: CREATOR_BIO,
+            bio: "",
+            description: "Creator and lead developer of Discord Role Guardian", // Added description
         },
     ]
 
@@ -332,12 +363,18 @@ export default function ContributorsPage() {
                                             </div>
                                             <CardTitle className="text-foreground">{contributor.name}</CardTitle>
                                             <CardDescription className="text-muted-foreground">@{contributor.username}</CardDescription>
-                                            <div className="flex justify-center mt-2">
+                                            <div className="flex flex-col items-center gap-2 mt-2">
                                                 <Badge className={`${config.bgColor} ${config.color} border`}>{config.label}</Badge>
+                                                {contributor.contributorType && (
+                                                    <Badge variant="outline" className="text-xs">
+                                                        {contributor.contributorType}
+                                                    </Badge>
+                                                )}
                                             </div>
                                         </CardHeader>
                                         <CardContent className="text-center">
-                                            <p className="mb-4 text-sm text-muted-foreground">{contributor.bio}</p>
+                                            <p className="mb-2 text-sm text-foreground/80 font-medium">{contributor.description}</p>
+                                            {contributor.bio && <p className="mb-4 text-xs text-muted-foreground">{contributor.bio}</p>}
                                             <Link
                                                 href={contributor.githubUrl}
                                                 target="_blank"
