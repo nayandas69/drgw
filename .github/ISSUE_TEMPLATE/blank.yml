@@ -1,0 +1,43 @@
+name: General Issue
+description: For questions, discussions, or anything else
+title: ""
+labels: []
+assignees:
+  - nayandas69
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## General Issue / Discussion
+        Use this template for questions, discussions, or issues that don't fit the other categories.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Issue Type
+      description: What type of issue is this?
+      options:
+        - Question
+        - Discussion
+        - Documentation
+        - Security Concern
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Description
+      description: Describe your question, suggestion, or concern
+      placeholder: Write your message here...
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Any additional context, links, or information
+      placeholder: Add any relevant details...
