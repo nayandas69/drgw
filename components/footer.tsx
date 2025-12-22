@@ -19,6 +19,7 @@ export function Footer() {
     { href: "/contributors", label: "Contributors" },
     { href: "/terms-of-service", label: "Terms of Service" },
     { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/roadmap", label: "Roadmap" },
   ]
 
   const socialLinks = [
