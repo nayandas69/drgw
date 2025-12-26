@@ -3,7 +3,7 @@
  * Showcase all bot features with icons
  */
 
-import { Sparkles, UserPlus, UserMinus, Trophy, Ticket, Clock, Shield, Zap } from "lucide-react"
+import { Sparkles, UserPlus, UserMinus, Trophy, Ticket, Clock, Shield, Zap, MousePointerClick } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 /**
@@ -23,15 +23,25 @@ const features: Feature[] = [
     icon: Sparkles,
     title: "Reaction Roles",
     description:
-      "Let members self-assign roles by reacting to messages. Easy setup with /setup-reaction-roles command.",
+      "Let members self-assign roles by reacting to messages. Clean embeds with only title and description. Easy setup with /setup-reaction-roles command.",
     colorClass: "text-[var(--feature-reaction-roles)]",
     bgColorClass:
       "bg-[var(--feature-reaction-roles)]/10 group-hover:bg-[var(--feature-reaction-roles)]/20 group-hover:shadow-[var(--feature-reaction-roles)]/30",
   },
   {
+    icon: MousePointerClick,
+    title: "Button Roles",
+    description:
+      "Interactive button-based role assignment with 4 color styles. Supports up to 25 buttons with toggle functionality and DM notifications.",
+    colorClass: "text-[var(--feature-button-roles)]",
+    bgColorClass:
+      "bg-[var(--feature-button-roles)]/10 group-hover:bg-[var(--feature-button-roles)]/20 group-hover:shadow-[var(--feature-button-roles)]/30",
+  },
+  {
     icon: UserPlus,
     title: "Welcome Messages",
-    description: "Greet new members with customizable welcome messages in any channel with embedded colors.",
+    description:
+      "Greet new members with personalized 'Welcome [Username]!' messages. Optional rules and role channel mentions. Clean embeds without extra fields.",
     colorClass: "text-[var(--feature-welcome)]",
     bgColorClass:
       "bg-[var(--feature-welcome)]/10 group-hover:bg-[var(--feature-welcome)]/20 group-hover:shadow-[var(--feature-welcome)]/30",
@@ -39,7 +49,8 @@ const features: Feature[] = [
   {
     icon: UserMinus,
     title: "Leave Messages",
-    description: "Track departing members with goodbye messages. Fully customizable templates.",
+    description:
+      "Track departing members with goodbye messages. Fully customizable templates with clean embeds without footers.",
     colorClass: "text-[var(--feature-leave)]",
     bgColorClass:
       "bg-[var(--feature-leave)]/10 group-hover:bg-[var(--feature-leave)]/20 group-hover:shadow-[var(--feature-leave)]/30",

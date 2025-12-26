@@ -42,6 +42,7 @@ interface Command {
 /**
  * Command categories grouped by feature
  * UPDATED: Based on actual bot commands from src/commands folder
+ * UPDATED: Added Button Roles system, improved embed descriptions
  */
 const commandCategories = [
     {
@@ -59,7 +60,8 @@ const commandCategories = [
                     '/setup-reaction-roles channel:#roles title:"Choose Your Roles" description:"React to get roles" roles:🔴:123456789,🔵:987654321',
                     '/setup-reaction-roles channel:#get-roles title:"Game Roles" description:"Pick your games" roles:🎮:111222333,🎨:444555666',
                 ],
-                notes: "Role format: emoji1:roleID1,emoji2:roleID2 - Bot automatically adds reactions to the message",
+                notes:
+                    "Role format: emoji1:roleID1,emoji2:roleID2 - Bot automatically adds reactions. Embeds show only title and description for a cleaner look.",
             },
             {
                 name: "/remove-reaction-roles",
@@ -71,6 +73,34 @@ const commandCategories = [
         ],
     },
     {
+        title: "Button Roles",
+        icon: Sparkles,
+        color: "text-[var(--feature-button-roles)]",
+        bgColor: "bg-[var(--feature-button-roles)]/10",
+        commands: [
+            {
+                name: "/setup-button-roles",
+                description: "Create interactive button role messages with up to 25 buttons",
+                usage: "/setup-button-roles channel:<channel> title:<title> description:<description> roles:<format>",
+                permission: "Administrator",
+                examples: [
+                    '/setup-button-roles channel:#roles title:"Select Your Roles" description:"Click buttons to get roles" roles:Gamer:123456789:primary,Artist:987654321:success',
+                    '/setup-button-roles channel:#get-roles title:"Game Roles" description:"Pick your favorite games" roles:Valorant:111222:danger,Minecraft:333444:success,Fortnite:555666:primary',
+                ],
+                notes:
+                    "Role format: label:roleID:style,label:roleID:style - Supports 4 button styles: primary (blue), secondary (gray), success (green), danger (red). Maximum 25 buttons (5 rows of 5). Includes toggle functionality and DM notifications when roles are added/removed. Persistent storage survives bot restarts.",
+            },
+            {
+                name: "/remove-button-roles",
+                description: "Remove button role configuration from a message",
+                usage: "/remove-button-roles message-id:<id>",
+                permission: "Administrator",
+                examples: ["/remove-button-roles message-id:123456789012345678"],
+                notes: "Removes the button role configuration. The message itself remains but buttons will no longer function.",
+            },
+        ],
+    },
+    {
         title: "Welcome & Leave System",
         icon: UserPlus,
         color: "text-[var(--feature-welcome)]",
@@ -78,26 +108,28 @@ const commandCategories = [
         commands: [
             {
                 name: "/setup-welcome",
-                description: "Configure welcome messages for new members",
-                usage: "/setup-welcome channel:<channel> message:<message> [embed-color:<color>]",
+                description: "Configure welcome messages for new members with personalized greetings",
+                usage:
+                    "/setup-welcome channel:<channel> message:<message> [embed-color:<color>] [rules-channel:<channel>] [role-channel:<channel>]",
                 permission: "Administrator",
                 examples: [
                     '/setup-welcome channel:#welcome message:"Welcome {user} to {server}! You are member #{count}!" embed-color:#00ff00',
-                    '/setup-welcome channel:#general message:"Hey {user}, read the rules!"',
+                    '/setup-welcome channel:#general message:"Hey {user}, check out the rules!" rules-channel:#rules role-channel:#roles',
                 ],
                 notes:
-                    "Placeholders: {user} = mention user, {server} = server name, {count} = total member count. Default color: #00ff00",
+                    "Placeholders: {user} = mention user, {server} = server name, {count} = total member count. Default color: #00ff00. Welcome embeds now use personalized title 'Welcome [Username]!' with optional rules and role channel mentions. Cleaner format without username, account created, or user ID fields.",
             },
             {
                 name: "/setup-leave",
-                description: "Set up goodbye messages for departing members",
+                description: "Set up goodbye messages for departing members with clean embeds",
                 usage: "/setup-leave channel:<channel> message:<message> [embed-color:<color>]",
                 permission: "Administrator",
                 examples: [
                     '/setup-leave channel:#goodbye message:"Goodbye {user}! We\'ll miss you!" embed-color:#ff0000',
                     '/setup-leave channel:#general message:"{user} has left {server}"',
                 ],
-                notes: "Placeholders: {user} = username, {server} = server name. Default color: #ff0000",
+                notes:
+                    "Placeholders: {user} = username, {server} = server name. Default color: #ff0000. Leave messages now display with cleaner embeds without footer containing user ID and timestamp.",
             },
         ],
     },
@@ -230,7 +262,7 @@ const commandCategories = [
                 permission: "Administrator",
                 examples: ["/reset"],
                 notes:
-                    "⚠️ CANNOT BE UNDONE! Removes: welcome/leave messages, reaction roles, leveling system + all XP, scheduled messages, ticket system. Deletes panel messages. No restart needed",
+                    "⚠️ CANNOT BE UNDONE! Removes: welcome/leave messages, reaction roles, button roles, leveling system + all XP, scheduled messages, ticket system. Deletes panel messages. No restart needed.",
             },
         ],
     },
