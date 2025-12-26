@@ -17,6 +17,16 @@ const commands = [
     permission: "Admin",
   },
   {
+    name: "/setup-button-roles",
+    description: "Create interactive button-based role assignment",
+    permission: "Admin",
+  },
+  {
+    name: "/remove-button-roles",
+    description: "Remove button role configuration from a message",
+    permission: "Admin",
+  },
+  {
     name: "/setup-welcome",
     description: "Set up welcome messages for new members",
     permission: "Admin",
@@ -120,11 +130,10 @@ export function CommandsSection() {
                     <td className="whitespace-nowrap px-6 py-4">
                       <Badge
                         variant={cmd.permission === "Public" ? "default" : "secondary"}
-                        className={`transition-all duration-300 hover:scale-110 ${
-                          cmd.permission === "Public"
-                            ? "bg-success text-success-foreground hover:shadow-lg hover:shadow-success/30"
-                            : "hover:bg-primary/20 hover:text-primary"
-                        }`}
+                        className={`transition-all duration-300 hover:scale-110 ${cmd.permission === "Public"
+                          ? "bg-success text-success-foreground hover:shadow-lg hover:shadow-success/30"
+                          : "hover:bg-primary/20 hover:text-primary"
+                          }`}
                       >
                         {cmd.permission}
                       </Badge>

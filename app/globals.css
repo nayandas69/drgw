@@ -66,6 +66,7 @@
   --feature-scheduled: oklch(0.6 0.2 305);
   --feature-role-management: oklch(0.58 0.22 245);
   --feature-easy-setup: oklch(0.65 0.2 180);
+  --feature-button-roles: oklch(0.63 0.22 220);
 }
 
 @theme inline {
@@ -100,6 +101,7 @@
   --color-feature-scheduled: var(--feature-scheduled);
   --color-feature-role-management: var(--feature-role-management);
   --color-feature-easy-setup: var(--feature-easy-setup);
+  --color-feature-button-roles: var(--feature-button-roles);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
